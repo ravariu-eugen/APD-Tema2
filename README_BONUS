@@ -1,0 +1,19 @@
+
+    Am realizat partitionarea in mod aproximativ egal a fisierului "orders.txt"
+la mai multe thread-uri de tip OrderProcessor
+
+Implementare bonus:
+    Mai intai, atribui fiecarui thread secvente de lungime egala de bytes din
+fisier, fiecare avand pozitia de inceput startPos (pozitia primului byte) si
+pozitia de sfarsit endPos (pozitia de dupa ultimul byte). In acest mod,
+startPos pentru thread-ul i este egal cu endPos pentru thread-ul i-1.
+    Daca startPos se afla la inceputul unei linii (caracterul de la pozitia
+(startPos-1) este '\n'), atunci putem continua. Altfel, incrementam startPos
+pana cand ajunge la inceputul unei linii. Aplicam apoi acest algoritm si pentru
+endPos. Astfel, am obtinum o impartire a fisierului initial in secvente de linii
+consecutive de lungimi aproximativ egale.
+    Dupa aceea, aplicam aceasta operatie si pe endPos.
+    Pentru a citi secventa asociata fisierului, mutam filePointer-ul la startPos
+si citim pana cand ajunge la endPos.
+
+

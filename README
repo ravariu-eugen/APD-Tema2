@@ -1,0 +1,27 @@
+
+Clase folosite:
+    Tema2
+        - contine funtia main
+    OrderProcessor(int index, int total)
+        - reprezinta thread-urile de nivel 1
+        - proceseaza comenzile din sectiunea asociata din fisierul "orders.txt"
+    ProductFinder(String orderID, AtomicInteger foundProductCount, BufferedReader productReader)
+        - reprezinta thread-urile de nivel 2
+        - cauta un produs asociat comenzii orderID in fisierul "order_products.txt"
+        - incrementeaza contorul foundProductCount daca gaseste un produs
+
+Desfasurare program:
+
+    Mai intai, se creaza in main P thread-uri OrderProcessor pentru a citi comenzi.
+    Intrucat toate thread-urile de nivel 1 sunt create aici, rezulta ca exista cel
+mult P thread-uri de nivel 1 care ruleaza simultan.
+    Fiecare thread OrderProcessor citeste comenzi din sectiunea corespunzatoare.
+O comanda este formata din orderID(String) si productCount(int). Thread-ul va crea
+productCount thread-uri ProductFinder, fiecare avand rolul de a gasi un produs asociat
+comenzii orderId. Pentru ca fiecare thread sa citeasca linii diferite din fisier, toate
+thread-urile vor citi din aceeasi instanta a clasei BufferedReader. Deoarece citirea
+este thread-safe, fiecare thread va citi linii diferite.
+    Pentru a limita numarul de thread-uri de nivel 2 la P, folosim un semafor initializat
+cu valoarea P. Inainte sa se porneasca un thread ProductFinder, se apeleaza acquire, iar,
+cand se termina thread-ul, acesta apeleaza release pentru a da permisiune sa inceapa
+unui alt thread. Astfel, exista cel mult P thread-uri de nivel 2 care ruleaza simultan.
